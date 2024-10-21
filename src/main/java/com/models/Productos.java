@@ -2,6 +2,7 @@ package com.models;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 public class Productos {
     ArrayList<Producto> productos;
@@ -14,17 +15,17 @@ public class Productos {
         productos.add(p);
     }
 
-    public Producto buscarProducto(int index) {
+    public Producto buscarProducto(String nombre) {
         for (Producto p : productos) {
-            if (p.getIdProd() == index) {
+            if (Objects.equals(p.getNombreProd(),nombre)) {
                 return p;
             }
         }
         return null;
     }
 
-    public void eliminarProducto(int index){
-        productos.remove(buscarProducto(index));
+    public void eliminarProducto(String nombre){
+        productos.remove(buscarProducto(nombre));
     }
 
     public void ordenarProductosNombre(){

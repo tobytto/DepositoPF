@@ -1,6 +1,12 @@
 package com.models;
 
+import com.enums.TipoPersona;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.Objects;
+import com.validaciones.Validaciones;
 
 
 public abstract class Persona implements Comparable<Persona>{
@@ -8,9 +14,11 @@ public abstract class Persona implements Comparable<Persona>{
     private int id;
     private String nombre;
     private String apellido;
-    private int edad;
+    private LocalDate fechaNac;
     private String email;
-    private String domicilio;
+    private Domicilio domicilio;
+    private String dni;
+    private boolean active;
 
     public Persona(){
         contador++;
@@ -39,13 +47,28 @@ public abstract class Persona implements Comparable<Persona>{
         return this;
     }
 
-    public int getEdad() {
-        return edad;
+    public LocalDate getFechaNac() {
+        return fechaNac;
     }
 
-    public Persona setEdad(int edad) {
-        this.edad = edad;
+    public Persona setFechaNac(String fechaNac) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        if(Validaciones.validarFecha(fechaNac,formatter)){
+            this.fechaNac = LocalDate.parse(fechaNac, formatter) ;
+        }
         return this;
+    }
+
+    public Persona setDni(String dni){
+        //Tarea: realizar una funcion que valide que sea un dni sino dar una excepcion.
+        if(Validaciones.validarDNI(dni)){
+            this.dni = dni;
+            return this;
+        }
+        return this;
+    }
+    public String getDni(){
+        return this.dni;
     }
 
     public String getEmail() {
@@ -53,15 +76,30 @@ public abstract class Persona implements Comparable<Persona>{
     }
 
     public Persona setEmail(String email) {
-        this.email = email;
+        if(Validaciones.validarDNI(email)){
+            this.email = email;
+            return this;
+        }
         return this;
     }
 
-    public String getDomicilio() {
+    public boolean getActive(){
+        if(!this.active){
+            System.out.println("Usuario dado de baja");
+        }
+        return active;
+    }
+
+    public Persona setActive(Boolean active){
+        this.active = active;
+        return this;
+    }
+
+    public Domicilio getDomicilio() {
         return domicilio;
     }
 
-    public Persona setDomicilio(String domicilio) {
+    public Persona setDomicilio(Domicilio domicilio) {
         this.domicilio = domicilio;
         return this;
     }
@@ -73,12 +111,12 @@ public abstract class Persona implements Comparable<Persona>{
         Persona person = (Persona) o;
 
         if(this.hashCode()!= person.hashCode()){return false;}
-        return id == person.id && edad == person.edad && Objects.equals(nombre, person.nombre) && Objects.equals(apellido, person.apellido) && Objects.equals(email, person.email) && Objects.equals(domicilio, person.domicilio);
+        return id == person.id && fechaNac == person.fechaNac && Objects.equals(nombre, person.nombre) && Objects.equals(apellido, person.apellido) && Objects.equals(email, person.email) && Objects.equals(domicilio, person.domicilio);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nombre, apellido, edad, email, domicilio);
+        return Objects.hash(id, nombre, apellido, fechaNac, email, domicilio);
     }
 
     @Override
@@ -88,13 +126,13 @@ public abstract class Persona implements Comparable<Persona>{
 
     @Override
     public String toString() {
-        return "models.Persona{" +
-                "id=" + id +
-                ", nombre='" + nombre + '\'' +
-                ", apellido='" + apellido + '\'' +
-                ", edad=" + edad +
-                ", email='" + email + '\'' +
-                ", domicilio='" + domicilio + '\'' +
+        return
+                "id:" + id +
+                " { Nombre: " + nombre + '\'' +
+                ", apellido: " + apellido + '\'' +
+                ", fecha de nacimiento:" + fechaNac +
+                ", email: " + email + '\'' +
+                ", domicilio: " + domicilio + '\'' +
                 '}';
     }
 }

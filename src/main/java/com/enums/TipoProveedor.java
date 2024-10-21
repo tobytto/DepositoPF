@@ -1,5 +1,5 @@
 package com.enums;
 
 public enum TipoProveedor {
-    FISICO,JURIDICO;
+    GALLETITAS, BEBIDAS, SURTIDO, DIETETICO;
 }
